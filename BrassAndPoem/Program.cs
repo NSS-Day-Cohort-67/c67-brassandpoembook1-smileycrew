@@ -1,28 +1,4 @@
-﻿
-//create a "products" variable here to include at least five Product instances. Give them appropriate ProductTypeIds.
-
-//create a "productTypes" variable here with a List of ProductTypes, and add "Brass" and "Poem" types to the List. 
-
-//put your greeting here
-
-//implement your loop here
-// // **********
-// Create the program loop
-// Declare a list of product types and a list of products. When creating the lists, add at least two product types and five products.
-List<ProductType> productTypes = new List<ProductType>()
-{
-    new ProductType()
-    {
-        Id = 1,
-        Title = "poetry book"
-    },
-    new ProductType()
-    {
-        Id = 2,
-        Title = "brass musical instrument"
-    }
-};
-List<Product> products = new List<Product>()
+﻿List<Product> products = new List<Product>()
 {
     new Product()
     {
@@ -54,7 +30,7 @@ List<Product> products = new List<Product>()
     new Product()
     {
         // name
-        Name = "words of a goat pricess",
+        Name = "words of a goat princess",
         // price
         Price = 49.99M,
         // producttypeid
@@ -70,38 +46,56 @@ List<Product> products = new List<Product>()
         ProductTypeId = 1
     }
 };
-// Display a welcome message for the application
-string welcome = "welcome to the brass & poem";
-Console.WriteLine(welcome);
-// Create a loop that asks the user to choose an option, and will continue running until the use selects 5, at which point the program will finish.
-DisplayMenu();
+List<ProductType> productTypes = new List<ProductType>()
+{
+    new ProductType()
+    {
+        Id = 1,
+        Title = "poetry book"
+    },
+    new ProductType()
+    {
+        Id = 2,
+        Title = "brass musical instrument"
+    }
+};
+DisplayWelcome();
 string chosenOption = null;
 while (chosenOption != "5")
 {
+    // DisplayMenu
+    DisplayMenu();
     chosenOption = Console.ReadLine().Trim();
     if (chosenOption == "1")
     {
-        throw new NotImplementedException();
+        // DisplayAllProducts
+        DisplayAllProducts(products, productTypes);
     }
     else if (chosenOption == "2")
     {
-        throw new NotImplementedException();
+        // DeleteProduct
+        DeleteProduct(products, productTypes);
     }
     else if (chosenOption == "3")
     {
-        throw new NotImplementedException();
+        // AddProduct
+        AddProduct(products, productTypes);
     }
     else if (chosenOption == "4")
     {
-        throw new NotImplementedException();
+        // UpdateProduct
+        UpdateProduct(products, productTypes);
     }
     else if (chosenOption == "5")
     {
         Console.WriteLine("goodbye");
     }
 }
-// **********
-
+void DisplayWelcome()
+{
+    string welcome = "welcome to the brass & poem";
+    Console.WriteLine(welcome);
+};
 void DisplayMenu()
 {
     Console.WriteLine(@"choose one of the following...
@@ -111,26 +105,130 @@ void DisplayMenu()
     4. update a product
     5. end application");
 }
-
 void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
+// Add the product type title to the product display. HINT: You will need to use a Linq method to get the product type for each product.
 {
-    throw new NotImplementedException();
+    // Iterate over the products and display each product's name and price on a new line in the console. Start the line with the number of that product in the List (have the list start with 1, not 0).
+    for (int i = 0; i < products.Count; i++)
+    {
+        Product chosenProoduct = products[i];
+        Console.WriteLine($"{i + 1}. {chosenProoduct.Name} costs ${chosenProoduct.Price}");
+    }
 }
-
 void DeleteProduct(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    Product chosenProduct = null;
+    while (chosenProduct == null)
+    {
+        try
+        {
+            Console.WriteLine("choose an item to delete.....");
+            DisplayAllProducts(products, productTypes);
+            int response = int.Parse(Console.ReadLine().Trim()) - 1;
+            chosenProduct = products[response];
+            Console.WriteLine($"you chose to delete {chosenProduct.Name}...");
+            products.RemoveAt(response);
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("wrong format");
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            Console.WriteLine("out of range");
+        }
+    }
 }
-
 void AddProduct(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    Product newProduct = new Product();
+    Console.WriteLine(newProduct.Price);
+    while (newProduct.Name == null || newProduct.Price == 0 || newProduct.ProductTypeId == 0)
+    {
+        if (newProduct.Name == null)
+        {
+            Console.WriteLine("enter a name for your product");
+            newProduct.Name = Console.ReadLine().Trim();
+        }
+        if (newProduct.Price == 0)
+        {
+            try
+            {
+                Console.WriteLine("enter a price for your product");
+                newProduct.Price = decimal.Parse(Console.ReadLine().Trim());
+            }
+            catch (FormatException) { Console.WriteLine("wrong format"); }
+        }
+        if (newProduct.ProductTypeId == 0)
+        {
+            try
+            {
+                Console.WriteLine("choose one of the following types");
+                for (int i = 0; i < productTypes.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {productTypes[i].Title}");
+                }
+                newProduct.ProductTypeId = productTypes[int.Parse(Console.ReadLine().Trim()) - 1].Id;
+                Console.WriteLine(newProduct.ProductTypeId);
+            }
+            catch (FormatException) { Console.WriteLine("wrong format"); }
+            catch (ArgumentOutOfRangeException) { Console.WriteLine("out of range"); }
+        }
+    }
+    products.Add(newProduct);
 }
-
 void UpdateProduct(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
-}
+    Console.WriteLine("choose a product to update...");
+    DisplayAllProducts(products, productTypes);
+    Product chosenProduct = null;
+    while (chosenProduct == null)
+    {
+        try
+        {
+            chosenProduct = products[int.Parse(Console.ReadLine().Trim()) - 1];
+        }
+        catch (FormatException) { Console.WriteLine("wrong format"); }
+        catch (ArgumentOutOfRangeException) { Console.WriteLine("out of range"); }
+    }
+    Console.WriteLine("enter a new product name");
+    string updatedName = Console.ReadLine().Trim();
+    if (string.IsNullOrWhiteSpace(updatedName))
+    {
+        Console.WriteLine("you didnt change the name");
+    }
+    else if (updatedName != null)
+    {
+        chosenProduct.Name = updatedName;
+        Console.WriteLine($"new name is {chosenProduct.Name}");
+    }
+    Console.WriteLine("enter a new product price");
+    decimal updatedPrice = 0M;
+    while (updatedPrice == 0)
+    {
+        try
+        {
+            updatedPrice = decimal.Parse(Console.ReadLine().Trim());
+            if (updatedPrice == chosenProduct.Price)
+            {
+                Console.WriteLine("you didnt change the price");
+            }
+            else if (updatedPrice <= 0)
+            {
+                Console.WriteLine("item cannot be free");
+            }
+            else
+            {
+                chosenProduct.Price = updatedPrice;
+            }
 
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("wrong format... price will remain the same");
+            updatedPrice = chosenProduct.Price;
+        }
+    }
+}
 // don't move or change this!
 public partial class Program { }
