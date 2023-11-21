@@ -125,21 +125,21 @@ French Horn
                 Console.SetOut(writer);
                 displayMethod.Invoke(null, new object[] { Products, ProductTypes });
                 var output = writer.ToString();
-            Assert.True(
-                output.Contains("Brass") &&
-                output.Contains("Poem") &&
-                output.Contains("Trombone") &&
-                output.Contains("Trumpet") &&
-                output.Contains("Tuba") &&
-                output.Contains("Ozymandias") &&
-                output.Contains("Leaves of Grass") &&
-                output.Contains("150.99") &&
-                output.Contains("246.99") &&
-                output.Contains("1250.99") &&
-                output.Contains("12350.99") &&
-                output.Contains("15650.99")
-                );
-            Console.SetOut(stdOut);
+                Assert.True(
+                    output.Contains("Brass") &&
+                    output.Contains("Poem") &&
+                    output.Contains("Trombone") &&
+                    output.Contains("Trumpet") &&
+                    output.Contains("Tuba") &&
+                    output.Contains("Ozymandias") &&
+                    output.Contains("Leaves of Grass") &&
+                    output.Contains("150.99") &&
+                    output.Contains("246.99") &&
+                    output.Contains("1250.99") &&
+                    output.Contains("12350.99") &&
+                    output.Contains("15650.99")
+                    );
+                Console.SetOut(stdOut);
             }
         }
         catch (Exception ex)
@@ -156,11 +156,11 @@ French Horn
         try
         {
             var displayMethod = GetMethodFromTopLevel("DisplayMenu");
-        using (var writer = new StringWriter())
+            using (var writer = new StringWriter())
             {
                 Console.SetOut(writer);
-            displayMethod.Invoke(null, new object[] { });
-            Assert.Equal(writer.ToString().Trim(), @"1. Display all products
+                displayMethod.Invoke(null, new object[] { });
+                Assert.Equal(writer.ToString().Trim(), @"1. Display all products
 2. Delete a product
 3. Add a new product
 4. Update product properties
