@@ -106,9 +106,7 @@ void DisplayMenu()
     5. end application");
 }
 void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
-// Add the product type title to the product display. HINT: You will need to use a Linq method to get the product type for each product.
 {
-    // Iterate over the products and display each product's name and price on a new line in the console. Start the line with the number of that product in the List (have the list start with 1, not 0).
     for (int i = 0; i < products.Count; i++)
     {
         Product chosenProoduct = products[i];
